@@ -1,10 +1,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { nextFreeEntityId } from '../utils/entities'
+import { nextFreeEntityId, cloneEntities } from '../utils/entities'
 
 Vue.use(Vuex)
 
 const mutations = {
+  replaceEntities (state, payload) {
+    state.entities = payload.entities
+  },
   addEntity (state, payload) {
     state.entities.push(payload.entity)
   },
@@ -20,23 +23,26 @@ const mutations = {
     }
   },
   addEvent (state, payload) {
-    console.log('adding event', payload)
     state.events.push(payload.event)
-    console.log('event pushed', state.events.length)
   },
   clearFuture (state, payload) {
     state.events = state.events.filter(evt => evt.timestamp < payload.timestamp)
+  },
+  setTimestep (state, payload) {
+    state.currentTimestep = payload.timeStep
   }
 }
 
 const store = new Vuex.Store({
   state: {
     entities: [],
-    events: []
+    events: [],
+    currentTimestep: -1
   },
   getters: {
     entities: (state) => state.entities,
-    events: state => state.events
+    events: state => state.events,
+    currentTimestep: state => state.currentTimestep
   },
   mutations,
   actions: {
@@ -60,6 +66,30 @@ const store = new Vuex.Store({
         record: true,
         ...payload
       })
+    },
+    timeTravelTo ({ commit, getters }, payload) {
+      debugger
+      const targetTime = payload.timeStep
+      const allTranformations = getters.events
+      const currentTimestep = getters.currentTimestep
+      if (targetTime !== currentTimestep) {
+        const transformationsFilter = targetTime > currentTimestep
+          ? (t) => t.timestamp > currentTimestep && t.timestamp <= targetTime
+          : (t) => t.timestamp <= targetTime
+        const relevantTransformations = allTranformations.filter(transformationsFilter)
+        const initState = targetTime > currentTimestep ? {
+          entities: cloneEntities(getters.entities)
+        } : { entities: [] }
+        const newState = relevantTransformations.reduce((acc, curr) => {
+          const { type, payload } = curr
+          mutations[type](acc, JSON.parse(payload))
+          return acc
+        }, initState)
+        commit('replaceEntities', {
+          entities: newState.entities
+        })
+        commit('setTimestep', { timeStep: targetTime })
+      }
     }
   },
   modules: {
@@ -67,15 +97,17 @@ const store = new Vuex.Store({
 })
 
 store.subscribe((mutation, state) => {
-  console.log('mutation is happening', mutation.type, mutation.payload)
   if (mutation.payload.record) {
+    const timestamp = state.currentTimestep + 1
+    store.commit('clearFuture', { timestamp })
     store.commit('addEvent', {
       event: {
-        timestamp: state.events.length,
+        timestamp,
         type: mutation.type,
         payload: JSON.stringify(mutation.payload)
       }
     })
+    store.commit('setTimestep', { timeStep: timestamp })
   }
 })
 

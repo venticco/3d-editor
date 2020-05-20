@@ -5,3 +5,7 @@ export function nextFreeEntityId (entities) {
   })
   return maxId + 1
 }
+
+export function cloneEntities (entities) {
+  return JSON.parse(JSON.stringify(entities))
+}
