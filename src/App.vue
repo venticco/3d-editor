@@ -1,17 +1,22 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="app" class="app">
+    <timeline />
+    <workspace />
+    <entity-form />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Timeline from './components/Timeline.vue'
+import Workspace from './components/Workspace.vue'
+import EntityForm from './components/EntityForm.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    Timeline,
+    Workspace,
+    EntityForm
   }
 }
 </script>
@@ -24,5 +29,9 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+.app {
+  display: flex;
+  flex-direction: row;
 }
 </style>
