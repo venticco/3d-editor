@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h2>{{ selectedEntity ? 'Update' : 'New'}} entity</h2>
     <div>
       <label>Type:</label>
       <select v-model="entity.type">
@@ -26,7 +27,8 @@
       <label>Size:</label>
       <input v-model="entity.size" />
     </div>
-    <button @click="createEntity">Add entity</button>
+    <button @click="updateEntity" v-if="entity.id">Save entity</button>
+    <button @click="createEntity" v-else>Add entity</button>
   </div>
 </template>
 <script>
@@ -59,7 +61,12 @@ export default {
       colors
     }
   },
-  computed: {},
+  computed: {
+    selectedEntity () {
+      const selected = this.$store.getters.entities.filter(e => e.selected)
+      return selected.length === 1 ? selected[0] : null
+    }
+  },
   methods: {
     createEntity () {
       this.$store.dispatch('createEntity', {
@@ -67,8 +74,20 @@ export default {
       })
       this.prepareEntity()
     },
+    updateEntity () {
+      this.$store.dispatch('updateEntity', {
+        entity: this.entity,
+        record: true
+      })
+    },
     prepareEntity () {
-      this.entity = JSON.parse(JSON.stringify(this.defaultEntity))
+      const source = this.selectedEntity || this.defaultEntity
+      this.entity = JSON.parse(JSON.stringify(source))
+    }
+  },
+  watch: {
+    selectedEntity (val) {
+      this.prepareEntity()
     }
   }
 }

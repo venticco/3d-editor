@@ -11,6 +11,10 @@ const mutations = {
   addEntity (state, payload) {
     state.entities.push(payload.entity)
   },
+  updateEntity (state, payload) {
+    const entityIdx = state.entities.findIndex(ent => ent.id === payload.entity.id)
+    if (entityIdx > -1) state.entities.splice(entityIdx, 1, cloneEntities(payload.entity))
+  },
   removeEntity (state, payload) {
     const entityIdx = state.entities.findIndex(ent => ent.id === payload.id)
     if (entityIdx > -1) state.entities.splice(entityIdx, 1)
@@ -63,6 +67,9 @@ const store = new Vuex.Store({
         }
       })
     },
+    updateEntity ({ commit }, payload) {
+      commit('updateEntity', payload)
+    },
     removeEntity ({ commit }, payload) {
       commit('removeEntity', {
         record: true,
@@ -76,7 +83,10 @@ const store = new Vuex.Store({
       })
     },
     selectEntity ({ commit }, payload) {
-      commit('setSelection', payload)
+      commit('setSelection', {
+        ...payload,
+        record: true
+      })
     },
     timeTravelTo ({ commit, getters }, payload) {
       const targetTime = payload.timeStep
