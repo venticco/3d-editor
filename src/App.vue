@@ -2,6 +2,7 @@
   <div id="app" class="app">
     <timeline />
     <workspace />
+    <inspector />
     <entity-form />
   </div>
 </template>
@@ -10,13 +11,15 @@
 import Timeline from './components/Timeline.vue'
 import Workspace from './components/Workspace.vue'
 import EntityForm from './components/EntityForm.vue'
+import Inspector from './components/Inspector.vue'
 
 export default {
   name: 'App',
   components: {
     Timeline,
     Workspace,
-    EntityForm
+    EntityForm,
+    Inspector
   }
 }
 </script>
@@ -33,5 +36,8 @@ export default {
 .app {
   display: flex;
   flex-direction: row;
+}
+.app > * {
+  flex-grow: 1;
 }
 </style>
