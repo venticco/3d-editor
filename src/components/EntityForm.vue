@@ -22,6 +22,10 @@
       <label>Rotation:</label>
       <input v-model="entity.rotation" />
     </div>
+    <div>
+      <label>Size:</label>
+      <input v-model="entity.size" />
+    </div>
     <button @click="createEntity">Add entity</button>
   </div>
 </template>
@@ -38,7 +42,8 @@ export default {
           y: 0
         },
         rotation: 0,
-        color: 'blue'
+        color: 'blue',
+        size: 5
       },
       entity: {
         type: 'cube',
@@ -47,7 +52,8 @@ export default {
           y: 0
         },
         rotation: 0,
-        color: 'blue'
+        color: 'blue',
+        size: 5
       },
       types,
       colors

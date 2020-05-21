@@ -30,6 +30,12 @@ const mutations = {
   },
   setTimestep (state, payload) {
     state.currentTimestep = payload.timeStep
+  },
+  setSelection (state, payload) {
+    const selectedIds = payload.ids
+    state.entities.forEach(entity => {
+      Vue.set(entity, 'selected', selectedIds.includes(entity.id))
+    })
   }
 }
 
@@ -37,12 +43,14 @@ const store = new Vuex.Store({
   state: {
     entities: [],
     events: [],
-    currentTimestep: -1
+    currentTimestep: -1,
+    selectedId: null
   },
   getters: {
     entities: (state) => state.entities,
     events: state => state.events,
-    currentTimestep: state => state.currentTimestep
+    currentTimestep: state => state.currentTimestep,
+    selectedId: state => state.selectedId
   },
   mutations,
   actions: {
@@ -66,6 +74,9 @@ const store = new Vuex.Store({
         record: true,
         ...payload
       })
+    },
+    selectEntity ({ commit }, payload) {
+      commit('setSelection', payload)
     },
     timeTravelTo ({ commit, getters }, payload) {
       const targetTime = payload.timeStep

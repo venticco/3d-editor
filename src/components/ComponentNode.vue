@@ -13,6 +13,12 @@
     <template #rotation>
       <span>angle: {{value}}</span>
     </template>
+    <template #size>
+      <span>size: {{value}}</span>
+    </template>
+    <template #selected>
+      <span>selected: {{value}}</span>
+    </template>
   </v-switch>
   </div>
 </template>

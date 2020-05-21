@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="app">
     <timeline />
-    <workspace />
+    <workspace2-d />
     <inspector />
     <entity-form />
   </div>
@@ -9,7 +9,8 @@
 
 <script>
 import Timeline from './components/Timeline.vue'
-import Workspace from './components/Workspace.vue'
+// import Workspace from './components/Workspace.vue'
+import Workspace2D from './components/Workspace2D.vue'
 import EntityForm from './components/EntityForm.vue'
 import Inspector from './components/Inspector.vue'
 
@@ -17,9 +18,10 @@ export default {
   name: 'App',
   components: {
     Timeline,
-    Workspace,
+    // Workspace,
     EntityForm,
-    Inspector
+    Inspector,
+    Workspace2D
   }
 }
 </script>
