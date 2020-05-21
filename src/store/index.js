@@ -68,7 +68,6 @@ const store = new Vuex.Store({
       })
     },
     timeTravelTo ({ commit, getters }, payload) {
-      debugger
       const targetTime = payload.timeStep
       const allTranformations = getters.events
       const currentTimestep = getters.currentTimestep

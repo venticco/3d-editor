@@ -2,7 +2,7 @@
   <div>
     <button @click="undo" :disabled="currentTimestep === -1">Undo</button>
     <button @click="redo" :disabled="currentTimestep === events.length - 1">Redo</button>
-    <ol>
+    <ul>
       <li
         v-for="event in events"
         :key="event.timestamp"
@@ -10,7 +10,7 @@
         @click="travelTo(event.timestamp)">
         {{event.timestamp}}:{{event.type}}
       </li>
-    </ol>
+    </ul>
   </div>
 </template>
 <script>
@@ -37,6 +37,10 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+ul {
+  list-style-type: none;
+  padding-left: 0;
+}
 .current {
   background: blue;
   color: white;
