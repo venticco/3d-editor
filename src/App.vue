@@ -1,27 +1,31 @@
 <template>
   <div id="app" class="app">
-    <timeline />
-    <workspace2-d />
-    <inspector />
-    <entity-form />
+    <div class="row">
+      <workspace2-d />
+      <workspace3-d />
+    </div>
+    <div class="row">
+      <entity-form />
+      <timeline />
+    </div>
   </div>
 </template>
 
 <script>
 import Timeline from './components/Timeline.vue'
-// import Workspace from './components/Workspace.vue'
 import Workspace2D from './components/Workspace2D.vue'
+import Workspace3D from './components/Workspace3D.vue'
 import EntityForm from './components/EntityForm.vue'
-import Inspector from './components/Inspector.vue'
+// import Inspector from './components/Inspector.vue'
 
 export default {
   name: 'App',
   components: {
     Timeline,
-    // Workspace,
     EntityForm,
-    Inspector,
-    Workspace2D
+    // Inspector,
+    Workspace2D,
+    Workspace3D
   }
 }
 </script>
@@ -37,9 +41,13 @@ export default {
 }
 .app {
   display: flex;
+  flex-direction: column;
+}
+.row {
+  display: flex;
   flex-direction: row;
 }
-.app > * {
+.app > *, .row > * {
   flex-grow: 1;
 }
 </style>

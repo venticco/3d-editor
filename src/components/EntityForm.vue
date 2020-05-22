@@ -15,47 +15,48 @@
     </div>
     <div>
       <label>X:</label>
-      <input v-model="entity.position.x" />
+      <input v-model.number="entity.position.x" />
       <label>Y:</label>
-      <input v-model="entity.position.y" />
+      <input v-model.number="entity.position.y" />
     </div>
     <div>
       <label>Rotation:</label>
-      <input v-model="entity.rotation" />
+      <input v-model.number="entity.rotation" />
     </div>
     <div>
       <label>Size:</label>
-      <input v-model="entity.size" />
+      <input v-model.number="entity.size" />
     </div>
     <button @click="updateEntity" v-if="entity.id">Save entity</button>
     <button @click="createEntity" v-else>Add entity</button>
+    <button @click="removeEntity" v-if="entity.id">Remove</button>
   </div>
 </template>
 <script>
-const types = ['pyramid', 'cube', 'sphere']
+const types = ['sphere', 'cube', 'pyramid']
 const colors = ['red', 'blue', 'green']
 export default {
   data () {
     return {
       defaultEntity: {
-        type: 'cube',
+        type: 'sphere',
         position: {
           x: 0,
           y: 0
         },
         rotation: 0,
-        color: 'blue',
-        size: 5
+        color: 'red',
+        size: 10
       },
       entity: {
-        type: 'cube',
+        type: 'sphere',
         position: {
           x: 0,
           y: 0
         },
         rotation: 0,
-        color: 'blue',
-        size: 5
+        color: 'red',
+        size: 10
       },
       types,
       colors
@@ -83,6 +84,12 @@ export default {
     prepareEntity () {
       const source = this.selectedEntity || this.defaultEntity
       this.entity = JSON.parse(JSON.stringify(source))
+    },
+    removeEntity () {
+      this.$store.dispatch('removeEntity', {
+        id: this.entity.id,
+        record: true
+      })
     }
   },
   watch: {
